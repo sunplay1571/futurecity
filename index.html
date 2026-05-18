@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高雄達麗未來市 - 記憶版互動驗屋計畫表</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #16a085;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e2e8f0;
+            --accent-color: #e74c3c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .meta-info {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-reset {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-reset:hover {
+            background-color: #c0392b;
+        }
+
+        .important-note {
+            background-color: #eef9f6;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-note h3 {
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+
+        .interactive-item {
+            display: flex;
+            align-items: flex-start;
+            background: #fdfdfd;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .interactive-item:hover {
+            border-color: var(--secondary-color);
+            background: #f4faf8;
+        }
+
+        .interactive-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        .interactive-item.checked-item {
+            border-color: var(--border-color);
+            background: #f8fafc;
+        }
+
+        .interactive-item input[type="checkbox"]:checked + .item-text {
+            color: #a0aec0;
+            text-decoration: line-through;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        th.col-check { width: 8%; text-align: center; }
+        th.col-area  { width: 15%; }
+        th.col-step  { width: 52%; }
+        th.col-std   { width: 25%; }
+
+        td.cell-check {
+            text-align: center;
+        }
+        
+        td.cell-check input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        tr.checked-row {
+            background-color: #f7fafc !important;
+            color: #a0aec0;
+        }
+        
+        tr.checked-row td {
+            border-color: #edf2f7;
+        }
+
+        tr.checked-row .highlight {
+            color: #a0aec0;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .footer-tips {
+            background-color: #fff5f5;
+            border: 1px solid #feb2b2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .footer-tips h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .footer-tips ol {
+            padding-left: 20px;
+        }
+        
+        .footer-tips li {
+            margin-bottom: 8px;
+            list-style-type: decimal;
+        }
+
+        @print {
+            body { background-color: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .btn-reset { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>高雄達麗未來市 - 互動式驗屋計畫表</h1>
+        <div class="meta-info">驗屋日期：2026年5月28日 | 勾選進度會自動儲存於此設備中</div>
+        <button class="btn-reset" onclick="resetProgress()">🔄 清除並重置所有進度</button>
+    </header>
+
+    <div class="important-note">
+        <h3>💡 驗屋核心心法</h3>
+        <p><strong>「由大到小、先水電後土建。」</strong> 視覺上的油漆刮傷、髒污好處理；但<strong>「水（漏水/排水）」與「電（迴路/安全）」</strong>如果出問題，日後裝潢好才發現，修繕代代價極高。因此，務必把大部分精力集中在水電測試。</p>
+    </div>
+
+    <h2>一、 驗屋前置準備：工具包清點</h2>
+    <div class="tool-list">
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_1" onchange="saveToolProgress(this)">
+            <span class="item-text">🪙 硬幣 / 打診棒 (測空心磚)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_2" onchange="saveToolProgress(this)">
+            <span class="item-text">🔴 有色紙膠帶 (標記缺失)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_3" onchange="saveToolProgress(this)">
+            <span class="item-text">🔌 手機充電頭與線 (測插座)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_4" onchange="saveToolProgress(this)">
+            <span class="item-text">🔦 強力手電筒 (照暗處/油漆)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_5" onchange="saveToolProgress(this)">
+            <span class="item-text">🪣 水桶 / 大寶特瓶 (測排水)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_6" onchange="saveToolProgress(this)">
+            <span class="item-text">🧻 衛生紙 (測馬桶沖力)</span>
+        </label>
+        <label class="interactive-item">
+            <input type="checkbox" id="tool_7" onchange="saveToolProgress(this)">
+            <span class="item-text">📋 合約與客變圖面 (現場核對)</span>
+        </label>
+    </div>
+
+    <h2>二、 水路系統檢驗項目 (最重災區，務必嚴查)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-check">確認</th>
+                <th class="col-area">檢查區域</th>
+                <th class="col-step">檢驗項目與步驟</th>
+                <th class="col-std">期待標準 / 注意事項</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_1" onchange="toggleRow(this)"></td>
+                <td><strong>浴室</strong></td>
+                <td><strong>地排洩水坡度</strong>：拿水桶裝滿水，豪邁地潑在浴室角落。</td>
+                <td>水應順暢流向地排，不應有大面積積水或回流。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_2" onchange="toggleRow(this)"></td>
+                <td><strong>浴室</strong></td>
+                <td><strong>淋浴拉門水密性</strong>：關上門，用蓮蓬頭對準門縫與底部狂沖。</td>
+                <td>乾濕分離的乾區地板必須保持完全乾燥。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_3" onchange="toggleRow(this)"></td>
+                <td><strong>浴室</strong></td>
+                <td><strong>洗手台與浴缸</strong>：蓄水至滿（測試溢水孔），5分鐘後一次放掉。</td>
+                <td>排水速度要快，伸手摸下方 P 型存水彎與地面接縫不能滲水。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_4" onchange="toggleRow(this)"></td>
+                <td><strong>浴室</strong></td>
+                <td><strong>馬桶壓力測試</strong>：丟入 2~3 張衛生紙並沖水，反覆 2~3 次。</td>
+                <td>沖水力道充足，排水平順，水箱注水時無異音。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_5" onchange="toggleRow(this)"></td>
+                <td><strong>廚房</strong></td>
+                <td><strong>流理台排水</strong>：蓄滿一整缸水，拔掉塞子一次放完。</td>
+                <td>觀察水管接縫、溢水孔是否有漏水，排水管不可有倒灌現象。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_6" onchange="toggleRow(this)"></td>
+                <td><strong>陽台</strong></td>
+                <td><strong>洗衣機與地面地排</strong>：用水管直接灌水進去。</td>
+                <td>確保建商在施工時沒有水泥沙土堵塞管路。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="water_7" onchange="toggleRow(this)"></td>
+                <td><strong>冷氣</strong></td>
+                <td><span class="highlight">冷氣排水孔（必做！）</span>：拿寶特瓶對準排水孔灌水約 1000 cc。</td>
+                <td>觀察牆面是否有滲水痕跡，確認水有順利排走。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>三、 電路與弱電系統檢驗項目 (攸關安全)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-check">確認</th>
+                <th class="col-area">檢查項目</th>
+                <th class="col-step">檢驗步驟</th>
+                <th class="col-std">期待標準 / 注意事項</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="elec_1" onchange="toggleRow(this)"></td>
+                <td><strong>配電箱</strong></td>
+                <td>打開總開關箱，檢查各個無熔絲開關（NFB）。</td>
+                <td>每個開關都必須<span class="highlight">明確標示迴路名稱</span>（如：客廳插座、廚房專迴）。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="elec_2" onchange="toggleRow(this)"></td>
+                <td><strong>插座通電</strong></td>
+                <td>用手機充電器或小夜燈，把全屋每一個插座（包含高處冷氣孔、陽台）都插一次。</td>
+                <td>確認全數皆有通電。水區插座需注意是否確實安裝<strong>漏電斷路器</strong>。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="elec_3" onchange="toggleRow(this)"></td>
+                <td><strong>開關測試</strong></td>
+                <td>將全屋電燈開關反覆切換。</td>
+                <td>燈具不可閃爍、不可有接觸不良的喀喀聲。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="elec_4" onchange="toggleRow(this)"></td>
+                <td><strong>弱電箱</strong></td>
+                <td>打開弱電箱，檢查網路線、電話線、電視線。對講機須現場試撥功能。</td>
+                <td>線路不可雜亂糾結，確認各房間的資訊插座皆有預留線頭。對講機功能正常。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>四、 土建、建材與五金檢驗項目 (美觀與品質)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-check">確認</th>
+                <th class="col-area">檢查項目</th>
+                <th class="col-step">檢驗步驟</th>
+                <th class="col-std">期待標準 / 注意事項</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="build_1" onchange="toggleRow(this)"></td>
+                <td><strong>地磚/壁磚</strong></td>
+                <td>用硬幣或敲擊棒，敲擊每塊磚的「四個角落」與「中心點」。</td>
+                <td>若聲音空空、清脆（空心），必須貼紙膠帶標記。一般規定單塊磚空心面積不可超過 1/3。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="build_2" onchange="toggleRow(this)"></td>
+                <td><strong>玄關大門</strong></td>
+                <td>開關門數次，檢查氣密膠條。</td>
+                <td>開關不可有異音、不可搖晃。可用一張紙夾在門縫，關門後若能輕易拉出，代表氣密性不足。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="build_3" onchange="toggleRow(this)"></td>
+                <td><strong>窗戶與玻璃</strong></td>
+                <td>檢查各窗戶開關順暢度，目視窗框周邊。</td>
+                <td>窗框四周的<span class="highlight">矽利康（Silicone）必須打滿且平整無裂縫</span>，避免颱風天滲水。玻璃不可有明顯刮痕。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="build_4" onchange="toggleRow(this)"></td>
+                <td><strong>建商附贈廚衛</strong></td>
+                <td>檢查三機是否過電運轉；開關所有廚具櫃體。</td>
+                <td>櫃體與抽屜的<strong>緩衝鉸鏈</strong>必須有效，關上時不會發出劇烈撞擊聲。</td>
+            </tr>
+            <tr>
+                <td class="cell-check"><input type="checkbox" id="build_5" onchange="toggleRow(this)"></td>
+                <td><strong>油漆與牆面</strong></td>
+                <td>用手電筒從牆壁側面打光照射。</td>
+                <td>檢查是否有粉刷不均、垂流、嚴重波浪起伏或明顯裂縫。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer-tips">
+        <h3>📝 現場談判與對策小叮嚀</h3>
+        <ol>
+            <li><strong>缺失記錄要「量化」</strong>：發現缺失時，在建商的「缺失單」上一定要寫得非常具體。例如：「客廳正中央落地窗，右側玻璃中央有 5cm 刮痕」，避免修繕找錯地方。</li>
+            <li><strong>善用拍照與錄影</strong>：每個貼紙膠帶的地方，先拍一張「遠景照（確認空間位置）」，再拍一張「近拍照（看清瑕疵細節）」。</li>
+            <li><strong>確認合約權益</strong>：依據定型化契約，結構部分建商通常保固 15 年，固定建材與設備保固 1 年。在所有缺失修復並完成「複驗」之前，原則上不要輕易簽署正式交屋同意書。</li>
+        </ol>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'futurecity_inspection_progress';
+
+    // 網頁載入時恢復進度
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        
+        // 恢復所有勾選進度
+        Object.keys(savedProgress).forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.checked = savedProgress[id];
+                if (id.startsWith('tool_')) {
+                    if(checkbox.checked) checkbox.parentElement.classList.add('checked-item');
+                } else {
+                    toggleRowVisual(checkbox, checkbox.checked);
+                }
+            }
+        });
+    });
+
+    // 儲存工具清單進度
+    function saveToolProgress(checkbox) {
+        if (checkbox.checked) {
+            checkbox.parentElement.classList.add('checked-item');
+        } else {
+            checkbox.parentElement.classList.remove('checked-item');
+        }
+        updateStorage(checkbox.id, checkbox.checked);
+    }
+
+    // 表格打勾觸發變色與儲存
+    function toggleRow(checkbox) {
+        toggleRowVisual(checkbox, checkbox.checked);
+        updateStorage(checkbox.id, checkbox.checked);
+    }
+
+    function toggleRowVisual(checkbox, isChecked) {
+        const row = checkbox.parentElement.parentElement;
+        if (isChecked) {
+            row.classList.add('checked-row');
+        } else {
+            row.classList.remove('checked-row');
+        }
+    }
+
+    // 更新 localStorage
+    function updateStorage(id, value) {
+        const savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        savedProgress[id] = value;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
+    }
+
+    // 重置所有資料
+    function resetProgress() {
+        if (confirm('確定要清除所有已勾選的驗屋進度嗎？')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
